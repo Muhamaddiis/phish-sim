@@ -86,10 +86,10 @@ DB_HOST=db
 DB_PORT=5432
 
 # SMTP (see SMTP Configuration section below)
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
+<!-- SMTP_HOST=smtp.gmail.com -->
+<!-- SMTP_PORT=587
 SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-app-password
+SMTP_PASS=your-app-password -->
 
 # JWT Secret (change this!)
 JWT_SECRET=change_this_to_random_string_min_32_chars
@@ -119,12 +119,12 @@ docker-compose exec app sh
 # This will be added to the main.go initialization
 ```
 
-Or use the API directly:
+<!-- Or use the API directly:
 ```bash
 curl -X POST http://localhost:8080/api/register \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"Admin123!","role":"admin"}'
-```
+``` -->
 
 ### 5. Start Frontend (Development)
 
@@ -153,31 +153,31 @@ Frontend will be available at `http://localhost:3000`
    - Copy the generated password
 3. Update `.env`:
    ```env
-   SMTP_HOST=smtp.gmail.com
+   <!-- SMTP_HOST=smtp.gmail.com
    SMTP_PORT=587
    SMTP_USER=your-email@gmail.com
-   SMTP_PASS=your-16-char-app-password
+   SMTP_PASS=your-16-char-app-password -->
    ```
 
 ### SendGrid Setup (Production)
 
-1. Sign up at sendgrid.com
+<!-- 1. Sign up at sendgrid.com
 2. Create an API key
 3. Update `.env`:
    ```env
    SMTP_HOST=smtp.sendgrid.net
    SMTP_PORT=587
    SMTP_USER=apikey
-   SMTP_PASS=your-sendgrid-api-key
+   SMTP_PASS=your-sendgrid-api-key -->
    ```
 
-### Mailgun Setup
+<!-- ### Mailgun Setup
 
 ```env
 SMTP_HOST=smtp.mailgun.org
 SMTP_PORT=587
 SMTP_USER=postmaster@your-domain.mailgun.org
-SMTP_PASS=your-mailgun-password
+SMTP_PASS=your-mailgun-password -->
 ```
 
 ## Usage Guide
