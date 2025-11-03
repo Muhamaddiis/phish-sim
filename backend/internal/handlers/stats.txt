@@ -1,0 +1,421 @@
+[{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use sent (variable of type int) as int64 value in struct literal",
+	"source": "compiler",
+	"startLineNumber": 192,
+	"startColumn": 16,
+	"endLineNumber": 192,
+	"endColumn": 20,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use opened (variable of type int) as int64 value in struct literal",
+	"source": "compiler",
+	"startLineNumber": 193,
+	"startColumn": 16,
+	"endLineNumber": 193,
+	"endColumn": 22,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use clicked (variable of type int) as int64 value in struct literal",
+	"source": "compiler",
+	"startLineNumber": 194,
+	"startColumn": 16,
+	"endLineNumber": 194,
+	"endColumn": 23,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use submitted (variable of type int) as int64 value in struct literal",
+	"source": "compiler",
+	"startLineNumber": 195,
+	"startColumn": 16,
+	"endLineNumber": 195,
+	"endColumn": 25,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use opened (variable of type int) as int64 value in argument to calculateRate",
+	"source": "compiler",
+	"startLineNumber": 196,
+	"startColumn": 30,
+	"endLineNumber": 196,
+	"endColumn": 36,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use sent (variable of type int) as int64 value in argument to calculateRate",
+	"source": "compiler",
+	"startLineNumber": 196,
+	"startColumn": 38,
+	"endLineNumber": 196,
+	"endColumn": 42,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use clicked (variable of type int) as int64 value in argument to calculateRate",
+	"source": "compiler",
+	"startLineNumber": 197,
+	"startColumn": 30,
+	"endLineNumber": 197,
+	"endColumn": 37,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use sent (variable of type int) as int64 value in argument to calculateRate",
+	"source": "compiler",
+	"startLineNumber": 197,
+	"startColumn": 39,
+	"endLineNumber": 197,
+	"endColumn": 43,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use submitted (variable of type int) as int64 value in argument to calculateRate",
+	"source": "compiler",
+	"startLineNumber": 198,
+	"startColumn": 30,
+	"endLineNumber": 198,
+	"endColumn": 39,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use sent (variable of type int) as int64 value in argument to calculateRate",
+	"source": "compiler",
+	"startLineNumber": 198,
+	"startColumn": 41,
+	"endLineNumber": 198,
+	"endColumn": 45,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use sent (variable of type int) as int64 value in struct literal",
+	"source": "compiler",
+	"startLineNumber": 238,
+	"startColumn": 16,
+	"endLineNumber": 238,
+	"endColumn": 20,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use opened (variable of type int) as int64 value in struct literal",
+	"source": "compiler",
+	"startLineNumber": 239,
+	"startColumn": 16,
+	"endLineNumber": 239,
+	"endColumn": 22,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use clicked (variable of type int) as int64 value in struct literal",
+	"source": "compiler",
+	"startLineNumber": 240,
+	"startColumn": 16,
+	"endLineNumber": 240,
+	"endColumn": 23,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use submitted (variable of type int) as int64 value in struct literal",
+	"source": "compiler",
+	"startLineNumber": 241,
+	"startColumn": 16,
+	"endLineNumber": 241,
+	"endColumn": 25,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use opened (variable of type int) as int64 value in argument to calculateRate",
+	"source": "compiler",
+	"startLineNumber": 242,
+	"startColumn": 30,
+	"endLineNumber": 242,
+	"endColumn": 36,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use sent (variable of type int) as int64 value in argument to calculateRate",
+	"source": "compiler",
+	"startLineNumber": 242,
+	"startColumn": 38,
+	"endLineNumber": 242,
+	"endColumn": 42,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use clicked (variable of type int) as int64 value in argument to calculateRate",
+	"source": "compiler",
+	"startLineNumber": 243,
+	"startColumn": 30,
+	"endLineNumber": 243,
+	"endColumn": 37,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use sent (variable of type int) as int64 value in argument to calculateRate",
+	"source": "compiler",
+	"startLineNumber": 243,
+	"startColumn": 39,
+	"endLineNumber": 243,
+	"endColumn": 43,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use submitted (variable of type int) as int64 value in argument to calculateRate",
+	"source": "compiler",
+	"startLineNumber": 244,
+	"startColumn": 30,
+	"endLineNumber": 244,
+	"endColumn": 39,
+	"origin": "extHost1"
+},{
+	"resource": "/c:/2.2/phish-sim/backend/internal/handlers/stats.go",
+	"owner": "_generated_diagnostic_collection_name_#3",
+	"code": {
+		"value": "IncompatibleAssign",
+		"target": {
+			"$mid": 1,
+			"path": "/golang.org/x/tools/internal/typesinternal",
+			"scheme": "https",
+			"authority": "pkg.go.dev",
+			"fragment": "IncompatibleAssign"
+		}
+	},
+	"severity": 8,
+	"message": "cannot use sent (variable of type int) as int64 value in argument to calculateRate",
+	"source": "compiler",
+	"startLineNumber": 244,
+	"startColumn": 41,
+	"endLineNumber": 244,
+	"endColumn": 45,
+	"origin": "extHost1"
+}]
