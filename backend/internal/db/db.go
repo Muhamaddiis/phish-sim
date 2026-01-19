@@ -18,8 +18,8 @@ func InitDB() (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 		getEnv("DB_HOST", "localhost"),
-		getEnv("POSTGRES_USER", "phish"),
-		getEnv("POSTGRES_PASSWORD", "phishpass"),
+		getEnv("POSTGRES_USER", "postgres"),
+		getEnv("POSTGRES_PASSWORD", "REDACTED"),
 		getEnv("POSTGRES_DB", "phishsim"),
 		getEnv("DB_PORT", "5432"),
 		getEnv("DB_SSLMODE", "disable"),
@@ -63,10 +63,10 @@ func RunMigrations(db *gorm.DB) error {
 	}
 
 	log.Println("✅ Database migrations completed")
-	
+
 	// Create default admin user if none exists
 	createDefaultAdmin(db)
-	
+
 	return nil
 }
 
@@ -74,7 +74,7 @@ func RunMigrations(db *gorm.DB) error {
 func createDefaultAdmin(db *gorm.DB) {
 	var count int64
 	db.Model(&models.User{}).Count(&count)
-	
+
 	if count == 0 {
 		log.Println("Creating default admin user...")
 		// Note: Password hashing will be done in the auth handler

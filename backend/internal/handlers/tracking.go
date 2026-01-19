@@ -23,6 +23,7 @@ func NewTrackingHandler(db *gorm.DB) *TrackingHandler {
 
 // TrackOpen logs email open event and returns 1x1 transparent GIF
 func (h *TrackingHandler) TrackOpen(w http.ResponseWriter, r *http.Request) {
+    fmt.Println("🔥 TrackOpen hit:", r.RemoteAddr)
 	token := chi.URLParam(r, "token")
 
 	// Find target by token
@@ -52,6 +53,7 @@ func (h *TrackingHandler) TrackOpen(w http.ResponseWriter, r *http.Request) {
 
 // TrackClick logs click event and redirects to landing page
 func (h *TrackingHandler) TrackClick(w http.ResponseWriter, r *http.Request) {
+    fmt.Println("🔥 TrackClick hit:", r.RemoteAddr)
 	token := chi.URLParam(r, "token")
 
 	// Find target by token
