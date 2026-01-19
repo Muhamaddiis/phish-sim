@@ -86,7 +86,7 @@ func (h *CampaignHandler) GetCampaign(w http.ResponseWriter, r *http.Request) {
 
 	var campaign models.Campaign
 	if err := h.db.Preload("Targets.Events").First(&campaign, "id = ?", campaignID).Error; err != nil {
-		respondError(w, http.StatusNotFound, "Campaign not found")
+		respondError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -246,15 +246,17 @@ func (h *CampaignHandler) sendEmailsBatch(campaign models.Campaign) {
 
 		// Send email
 		err := h.mailer.SendEmail(campaign.FromAddress, target.Email, subject, body)
-		
+		 if err != nil {
+            fmt.Printf("Failed to send email to %s: %v\n", target.Email, err)
+            // You can also log this error into a file or a logging system
+            continue
+        }
 		now := time.Now()
-		if err == nil {
 			// Mark as sent
-			h.db.Model(&target).Updates(map[string]interface{}{
-				"sent":    true,
-				"sent_at": &now,
-			})
-		}
+		h.db.Model(&target).Updates(map[string]interface{}{
+			"sent":    true,
+			"sent_at": &now,
+		})
 
 		// Rate limiting: sleep to avoid SMTP throttling
 		time.Sleep(time.Millisecond * 500) // 2 emails per second
