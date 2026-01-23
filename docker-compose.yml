@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: phishsim_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-phishsim}
+      POSTGRES_USER: ${POSTGRES_USER:-phish}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-phishpass}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-phish}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API (Go)
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: phishsim_app
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:8080"
+    environment:
+      # Database
+      DB_HOST: db
+      DB_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-phishsim}
+      POSTGRES_USER: ${POSTGRES_USER:-phish}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-phishpass}
+      DB_SSLMODE: disable
+      
+      # SMTP
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      SMTP_FROM: ${SMTP_FROM:-${SMTP_USER}}
+      
+      # JWT
+      JWT_SECRET: ${JWT_SECRET:-change-this-secret-in-production}
+      
+      # App
+      APP_HOST: ${APP_HOST:-http://localhost:8080}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+      PORT: 8080
+      ENV: ${ENV:-development}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend/.env:/root/.env:ro
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  default:
+    name: phishsim_network

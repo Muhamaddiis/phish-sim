@@ -1,9 +1,6 @@
 # Phishing Simulation Tool (Educational)
-<<<<<<< HEAD
 <img src="/frontend/public/dash.png">
-=======
 
->>>>>>> b914ae4785cd7cf4fdf96699922fb1fddd4e8159
 ## ⚠️ ETHICAL & LEGAL WARNING
 
 **THIS TOOL IS FOR AUTHORIZED SECURITY AWARENESS TRAINING ONLY**
