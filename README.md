@@ -1,5 +1,5 @@
 # Phishing Simulation Tool (Educational)
-
+<img src="/frontend/public/dash.png">
 ## ⚠️ ETHICAL & LEGAL WARNING
 
 **THIS TOOL IS FOR AUTHORIZED SECURITY AWARENESS TRAINING ONLY**
