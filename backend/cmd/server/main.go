@@ -44,14 +44,15 @@ func main() {
 	campaignHandler := handlers.NewCampaignHandler(database, mailService)
 	trackingHandler := handlers.NewTrackingHandler(database)
 	statsHandler := handlers.NewStatsHandler(database)
+	reportsHandler := handlers.NewReportsHandler(database)
 
 	// Setup router
 	r := chi.NewRouter()
 
 	// Middleware stack
-	r.Use(middleware.Logger)       // Log all requests
-	r.Use(middleware.Recoverer)    // Recover from panics
-	r.Use(middleware.RealIP)       // Get real client IP
+	r.Use(middleware.Logger)                    // Log all requests
+	r.Use(middleware.Recoverer)                 // Recover from panics
+	r.Use(middleware.RealIP)                    // Get real client IP
 	r.Use(middleware.Timeout(60 * time.Second)) // Request timeout
 
 	// CORS configuration for frontend
@@ -68,7 +69,7 @@ func main() {
 	r.Group(func(r chi.Router) {
 		r.Post("/api/login", authHandler.Login)
 		r.Post("/api/register", authHandler.Register)
-		
+
 		// Tracking routes (public by design)
 		r.Get("/open/{token}", trackingHandler.TrackOpen)
 		r.Get("/t/{token}", trackingHandler.TrackClick)
@@ -90,7 +91,9 @@ func main() {
 
 		// Statistics routes
 		r.Get("/api/stats", statsHandler.GetOverallStats)
-		
+		//executive reports
+		r.Get("/api/reports/executive", reportsHandler.GetExecutiveReport)
+		r.Get("/api/reports/executive/csv", reportsHandler.ExportExecutiveReportCSV)
 		// Export routes
 		r.Get("/api/campaigns/{id}/export", campaignHandler.ExportResults)
 	})
