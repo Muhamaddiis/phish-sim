@@ -7,12 +7,20 @@ import {
   FiChevronsRight,
   FiHome,
 } from "react-icons/fi";
+import { IconType } from "react-icons";
 import { SiCampaignmonitor } from "react-icons/si";
 import { TbReportSearch } from "react-icons/tb";
 import { MdOutlineSettings } from "react-icons/md";
 import { motion } from "framer-motion";
 
-
+interface OptionProps {
+  Icon: IconType;          // the icon component type
+  title: string;
+  href: string;
+  active?: boolean;
+  open: boolean;
+  notifs?: number;
+}
 
 export const Sidebar = () => {
   const [open, setOpen] = useState(true);
@@ -71,17 +79,14 @@ const SIDEBAR_OPTIONS = [
 ];
 
 
-const Option = ({ Icon, title, href, active, open, notifs }) => {
+const Option = ({ Icon, title, href, active, open, notifs }: OptionProps) => {
   return (
     <Link href={href} title={title} aria-label={title} className="block">
       <motion.div
         layout
         className={`relative flex h-10 items-center rounded-md transition-colors
-          ${
-            active
-              ? "bg-indigo-100 text-indigo-800"
-              : "text-slate-500 hover:bg-slate-100"
-          }`}
+          ${active ? "bg-indigo-100 text-indigo-800" : "text-slate-500 hover:bg-slate-100"}
+        `}
       >
         <div className="grid h-full w-10 place-content-center text-lg">
           <Icon />
@@ -113,8 +118,10 @@ const Option = ({ Icon, title, href, active, open, notifs }) => {
   );
 };
 
-
-const TitleSection = ({ open }) => {
+interface TitleSectionProps {
+  open: boolean;
+}
+const TitleSection = ({ open }: TitleSectionProps) => {
   return (
     <div className="mb-3 border-b border-slate-300 pb-3">
       <div className="flex cursor-pointer items-center justify-between rounded-md transition-colors hover:bg-slate-100">
@@ -152,7 +159,11 @@ const Logo = () => {
   );
 };
 
-const ToggleClose = ({ open, setOpen }) => {
+interface ToggleCloseProps {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const ToggleClose = ({ open, setOpen }: ToggleCloseProps) => {
   return (
     <motion.button
       layout
