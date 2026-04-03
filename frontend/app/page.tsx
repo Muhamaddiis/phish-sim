@@ -330,7 +330,7 @@ export default function HomePage() {
                 color: 'orange',
               },
             ].map((feature, i) => {
-              const styles = colorStyles[feature.color];
+              const styles = colorStyles[feature.color as keyof typeof colorStyles];
               return (
                   <div
                 key={i}
