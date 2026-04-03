@@ -141,14 +141,14 @@ export default function CampaignDetailPage() {
         {/* Department Chart */}
         {stats && stats.department_stats && stats.department_stats.length > 0 && (
           <div className="mb-8 bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Department Breakdown</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-500">Department Breakdown</h2>
             <DepartmentChart data={stats.department_stats} />
           </div>
         )}
 
         {/* Targets Table */}
         <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Targets</h2>
+          <h2 className="text-xl font-semibold mb-4 text-gray-500">Targets</h2>
           <TargetsTable targets={campaign.targets || []} />
         </div>
       </div>

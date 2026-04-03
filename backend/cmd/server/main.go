@@ -10,7 +10,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
 
 	"github.com/Muhamaddiis/phish-sim/internal/db"
@@ -45,31 +44,23 @@ func main() {
 	trackingHandler := handlers.NewTrackingHandler(database)
 	statsHandler := handlers.NewStatsHandler(database)
 	reportsHandler := handlers.NewReportsHandler(database)
+	aiHandler := handlers.AIHandler{}
 
 	// Setup router
 	r := chi.NewRouter()
 
 	// Middleware stack
-	r.Use(middleware.Logger)                    // Log all requests
-	r.Use(middleware.Recoverer)                 // Recover from panics
-	r.Use(middleware.RealIP)                    // Get real client IP
+	r.Use(middleware.Logger)       // Log all requests
+	r.Use(middleware.Recoverer)    // Recover from panics
+	r.Use(middleware.RealIP)       // Get real client IP
 	r.Use(middleware.Timeout(60 * time.Second)) // Request timeout
-
-	// CORS configuration for frontend
-	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{getEnv("FRONTEND_URL", "http://localhost:3000")},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
-		ExposedHeaders:   []string{"Link"},
-		AllowCredentials: true,
-		MaxAge:           300,
-	}))
+	r.Use(custommiddleware.CORSMiddleware) // Custom CORS handler with ngrok support
 
 	// Public routes (no authentication required)
 	r.Group(func(r chi.Router) {
 		r.Post("/api/login", authHandler.Login)
 		r.Post("/api/register", authHandler.Register)
-
+		
 		// Tracking routes (public by design)
 		r.Get("/open/{token}", trackingHandler.TrackOpen)
 		r.Get("/t/{token}", trackingHandler.TrackClick)
@@ -91,11 +82,15 @@ func main() {
 
 		// Statistics routes
 		r.Get("/api/stats", statsHandler.GetOverallStats)
-		//executive reports
+		
+		// Reports routes
 		r.Get("/api/reports/executive", reportsHandler.GetExecutiveReport)
 		r.Get("/api/reports/executive/csv", reportsHandler.ExportExecutiveReportCSV)
+		
 		// Export routes
 		r.Get("/api/campaigns/{id}/export", campaignHandler.ExportResults)
+		// AI routes
+		r.Post("/api/ai/generate-email", aiHandler.GenerateEmail)
 	})
 
 	// Health check endpoint

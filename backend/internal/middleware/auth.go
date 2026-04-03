@@ -34,7 +34,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		// If still no token found, return unauthorized
 		if tokenString == "" {
-			respondUnauthorized(w, "No authentication token provided")
+			respondUnauthorized(w, r, "No authentication token provided")
 			return
 		}
 
@@ -53,19 +53,19 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		})
 
 		if err != nil {
-			respondUnauthorized(w, "Invalid authentication token")
+			respondUnauthorized(w, r, "Invalid authentication token")
 			return
 		}
 
 		if !token.Valid {
-			respondUnauthorized(w, "Invalid authentication token")
+			respondUnauthorized(w, r, "Invalid authentication token")
 			return
 		}
 
 		// Extract claims
 		claims, ok := token.Claims.(jwt.MapClaims)
 		if !ok {
-			respondUnauthorized(w, "Invalid token claims")
+			respondUnauthorized(w, r ,"Invalid token claims")
 			return
 		}
 
@@ -80,7 +80,15 @@ func AuthMiddleware(next http.Handler) http.Handler {
 }
 
 // respondUnauthorized sends a 401 Unauthorized response
-func respondUnauthorized(w http.ResponseWriter, message string) {
+func respondUnauthorized(w http.ResponseWriter, r *http.Request, message string) {
+	origin := r.Header.Get("Origin")
+
+    if origin != "" {
+        w.Header().Set("Access-Control-Allow-Origin", origin)
+        w.Header().Set("Access-Control-Allow-Credentials", "true")
+        w.Header().Set("Access-Control-Allow-Headers", "Accept, Authorization, Content-Type")
+        w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+    }
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusUnauthorized)
 	w.Write([]byte(`{"error":"` + message + `"}`))

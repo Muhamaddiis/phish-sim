@@ -3,13 +3,12 @@
 import { useState } from 'react';
 import { campaignAPI } from '@/lib/api';
 
-export default function CSVUpload({ 
-  campaignId, 
-  onSuccess 
-}: { 
-  campaignId: string; 
+interface CSVUploadProps {
+  campaignId: string;
   onSuccess: () => void;
-}) {
+}
+
+export default function CSVUpload({ campaignId, onSuccess }: CSVUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState<any>(null);
 

@@ -26,7 +26,7 @@ func InitDB() (*gorm.DB, error) {
 	)
 
 	// Alternatively, use DB_URL if provided
-	if dbURL := os.Getenv("DB_URL"); dbURL != "" {
+	if dbURL := os.Getenv("DATABASE_URL"); dbURL != "" {
 		dsn = dbURL
 	}
 

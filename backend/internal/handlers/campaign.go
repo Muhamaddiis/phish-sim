@@ -6,10 +6,11 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
-	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
@@ -232,14 +233,14 @@ func (h *CampaignHandler) SendCampaign(w http.ResponseWriter, r *http.Request) {
 
 // sendEmailsBatch sends emails with rate limiting
 func (h *CampaignHandler) sendEmailsBatch(campaign models.Campaign) {
-	appHost := getEnv("APP_HOST", "http://localhost:8080")
+	appHost := getEnv("APP_HOST", "localhost:8080")
 
 	for _, target := range campaign.Targets {
 		// Replace placeholders in email
 		subject := replacePlaceholders(campaign.EmailSubject, target)
 		trackingLink := fmt.Sprintf("%s/t/%s", appHost, target.Token)
 		trackingPixel := fmt.Sprintf(`<img src="%s/open/%s" width="1" height="1" style="display:none" />`, appHost, target.Token)
-		
+		log.Printf("This is the tracking image pixel %v", trackingPixel)
 		body := replacePlaceholders(campaign.EmailBody, target)
 		body = strings.ReplaceAll(body, "{{Link}}", trackingLink)
 		body += trackingPixel // Add tracking pixel at end

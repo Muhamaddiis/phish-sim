@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
+import { MdEmail, MdCampaign, MdPhishing } from "react-icons/md";
+import { HiOutlineMailOpen } from "react-icons/hi";
+import { GiClick } from "react-icons/gi";
 import { Line, Doughnut, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -45,7 +48,7 @@ export default function ReportsPage() {
   const [report, setReport] = useState<ExecutiveReport | null>(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState({
-    start: new Date(Date.now() - 100 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
     end: new Date().toISOString().split('T')[0],
   });
 
@@ -63,6 +66,7 @@ export default function ReportsPage() {
         },
       });
       setReport(response.data);
+      
     } catch (error) {
       console.error('Failed to load report:', error);
     } finally {
@@ -115,8 +119,13 @@ export default function ReportsPage() {
     );
   }
 
-  const metrics = report.overall_metrics;
-  const riskLevel = report.risk_assessment.overall_risk_level;
+  const metrics = report.overall_metrics || {};
+  const riskLevel = report.risk_assessment?.overall_risk_level || 'Low';
+  const departmentRanking = report.department_ranking || [];
+  const topVulnerable = report.top_vulnerable || [];
+  const recommendations = report.recommendations || [];
+ const campaignSummary = report.campaign_summary ?? [];
+  console.log('campaign_summary:', campaignSummary);
 
   // Risk level color
   const riskColors = {
@@ -128,8 +137,6 @@ export default function ReportsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -165,7 +172,7 @@ export default function ReportsPage() {
                 type="date"
                 value={dateRange.start}
                 onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
-                className="mt-1 px-3 py-2 border border-gray-300 rounded-md"
+                className="mt-1 px-3 py-2 border border-gray-300 rounded-md text-gray-500"
               />
             </div>
             <div>
@@ -174,7 +181,7 @@ export default function ReportsPage() {
                 type="date"
                 value={dateRange.end}
                 onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
-                className="mt-1 px-3 py-2 border border-gray-300 rounded-md"
+                className="mt-1 px-3 py-2 border border-gray-300 rounded-md text-gray-500"
               />
             </div>
             <button
@@ -214,243 +221,271 @@ export default function ReportsPage() {
           <MetricCard
             title="Total Campaigns"
             value={metrics.total_campaigns}
-            icon="📊"
+            icon={<MdCampaign/>}
             color="blue"
           />
           <MetricCard
             title="Emails Sent"
             value={metrics.total_emails_sent.toLocaleString()}
-            icon="📧"
+            icon={<MdEmail/>}
             color="green"
           />
           <MetricCard
             title="Click Rate"
             value={`${metrics.average_click_rate.toFixed(1)}%`}
-            icon="🖱️"
+            icon={<GiClick/>}
             color="yellow"
             subtitle={getTrendIcon(report.trend_analysis.click_rate_trend)}
           />
           <MetricCard
             title="Users Compromised"
             value={metrics.total_users_compromised}
-            icon="⚠️"
+            icon={<MdPhishing/>}
             color="red"
           />
         </div>
 
         {/* Recommendations */}
         <div className="mb-8 bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">🎯 Key Recommendations</h2>
-          <ul className="space-y-3">
-            {report.recommendations.map((rec, index) => (
-              <li key={index} className="flex items-start">
-                <span className="text-indigo-600 mr-3 mt-1">•</span>
-                <span className="text-gray-700">{rec}</span>
-              </li>
-            ))}
-          </ul>
+          <h2 className="text-xl font-semibold mb-4 text-gray-500">🎯 Key Recommendations</h2>
+          {recommendations.length > 0 ? (
+            <ul className="space-y-3">
+              {recommendations.map((rec, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="text-indigo-600 mr-3 mt-1">•</span>
+                  <span className="text-gray-700">{rec}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-500">No recommendations available for this period.</p>
+          )}
         </div>
 
         {/* Charts Row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Department Risk Chart */}
           <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Department Risk Analysis</h2>
-            <Bar
-              data={{
-                labels: report.department_ranking.map(d => d.department),
-                datasets: [
-                  {
-                    label: 'Risk Score',
-                    data: report.department_ranking.map(d => d.risk_score),
-                    backgroundColor: report.department_ranking.map(d => {
-                      if (d.risk_level === 'Critical') return 'rgba(239, 68, 68, 0.8)';
-                      if (d.risk_level === 'High') return 'rgba(251, 146, 60, 0.8)';
-                      if (d.risk_level === 'Medium') return 'rgba(251, 191, 36, 0.8)';
-                      return 'rgba(34, 197, 94, 0.8)';
-                    }),
+            <h2 className="text-xl font-semibold mb-4 text-gray-500">Department Risk Analysis</h2>
+            {departmentRanking.length > 0 ? (
+              <Bar
+                data={{
+                  labels: departmentRanking.map(d => d.department),
+                  datasets: [
+                    {
+                      label: 'Risk Score',
+                      data: departmentRanking.map(d => d.risk_score),
+                      backgroundColor: departmentRanking.map(d => {
+                        if (d.risk_level === 'Critical') return 'rgba(239, 68, 68, 0.8)';
+                        if (d.risk_level === 'High') return 'rgba(251, 146, 60, 0.8)';
+                        if (d.risk_level === 'Medium') return 'rgba(251, 191, 36, 0.8)';
+                        return 'rgba(34, 197, 94, 0.8)';
+                      }),
+                    },
+                  ],
+                }}
+                options={{
+                  responsive: true,
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      max: 100,
+                    },
                   },
-                ],
-              }}
-              options={{
-                responsive: true,
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    max: 100,
-                  },
-                },
-              }}
-            />
+                }}
+              />
+            ) : (
+              <div className="flex items-center justify-center h-64 text-gray-500">
+                No department data available for this period
+              </div>
+            )}
           </div>
 
           {/* Campaign Effectiveness */}
           <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Campaign Effectiveness</h2>
-            <Doughnut
-              data={{
-                labels: report.campaign_summary.map(c => c.campaign_name),
-                datasets: [
-                  {
-                    label: 'Submit Rate',
-                    data: report.campaign_summary.map(c => c.submit_rate),
-                    backgroundColor: [
-                      'rgba(59, 130, 246, 0.8)',
-                      'rgba(16, 185, 129, 0.8)',
-                      'rgba(251, 191, 36, 0.8)',
-                      'rgba(239, 68, 68, 0.8)',
-                      'rgba(139, 92, 246, 0.8)',
-                    ],
-                  },
-                ],
-              }}
-            />
+            <h2 className="text-xl font-semibold mb-4 text-gray-500">Campaign Effectiveness</h2>
+            {campaignSummary.length > 0 ? (
+              <Doughnut
+                data={{
+                  labels: campaignSummary.map(c => c.campaign_name),
+                  datasets: [
+                    {
+                      label: 'Submit Rate',
+                      data: campaignSummary.map(c => c.submit_rate ?? 0),
+                      backgroundColor: [
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(251, 191, 36, 0.8)',
+                        'rgba(239, 68, 68, 0.8)',
+                        'rgba(139, 92, 246, 0.8)',
+                      ],
+                    },
+                  ],
+                }}
+              />
+            ) : (
+              <div className="flex items-center justify-center h-64 text-gray-500">
+                No campaigns found for this period
+              </div>
+            )}
           </div>
         </div>
 
         {/* Department Rankings Table */}
-        <div className="mb-8 bg-white p-6 rounded-lg shadow">
+        <div className="mb-8 bg-white p-6 rounded-lg shadow text-gray-500">
           <h2 className="text-xl font-semibold mb-4">Department Risk Rankings</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rank</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Department</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Risk Level</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Click Rate</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Submit Rate</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Compromised</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {report.department_ranking.map((dept, index) => (
-                  <tr key={index} className={index < 3 ? 'bg-red-50' : ''}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {index + 1}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {dept.department}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs rounded-full ${
-                        dept.risk_level === 'Critical' ? 'bg-red-100 text-red-800' :
-                        dept.risk_level === 'High' ? 'bg-orange-100 text-orange-800' :
-                        dept.risk_level === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-green-100 text-green-800'
-                      }`}>
-                        {dept.risk_level}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {dept.click_rate.toFixed(1)}%
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {dept.submit_rate.toFixed(1)}%
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                      {dept.compromised} / {dept.total_targets}
-                    </td>
+          {departmentRanking.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rank</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Department</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Risk Level</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Click Rate</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Submit Rate</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Compromised</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {departmentRanking.map((dept, index) => (
+                    <tr key={index} className={index < 3 ? 'bg-red-50' : ''}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {dept.department}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 py-1 text-xs rounded-full ${
+                          dept.risk_level === 'Critical' ? 'bg-red-100 text-red-800' :
+                          dept.risk_level === 'High' ? 'bg-orange-100 text-orange-800' :
+                          dept.risk_level === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-green-100 text-green-800'
+                        }`}>
+                          {dept.risk_level}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {dept.click_rate.toFixed(1)}%
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {dept.submit_rate.toFixed(1)}%
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                        {dept.compromised} / {dept.total_targets}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-gray-500 text-center py-8">No department data available for this period</p>
+          )}
         </div>
 
         {/* Top Vulnerable Users */}
         <div className="mb-8 bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">🎯 High-Risk Users (Require Training)</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Department</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Times Compromised</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Incident</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {report.top_vulnerable.map((user, index) => (
-                  <tr key={index} className={user.times_compromised >= 3 ? 'bg-red-50' : ''}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {user.name}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {user.email}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {user.department}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <span className={`px-2 py-1 rounded-full ${
-                        user.times_compromised >= 3 ? 'bg-red-100 text-red-800' :
-                        user.times_compromised >= 2 ? 'bg-orange-100 text-orange-800' :
-                        'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {user.times_compromised}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {user.last_compromised}
-                    </td>
+          <h2 className="text-xl font-semibold mb-4 text-gray-500">🎯 High-Risk Users (Require Training)</h2>
+          {topVulnerable.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Department</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Times Compromised</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Incident</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {topVulnerable.map((user, index) => (
+                    <tr key={index} className={user.times_compromised >= 3 ? 'bg-red-50' : ''}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {user.name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {user.email}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {user.department}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <span className={`px-2 py-1 rounded-full ${
+                          user.times_compromised >= 3 ? 'bg-red-100 text-red-800' :
+                          user.times_compromised >= 2 ? 'bg-orange-100 text-orange-800' :
+                          'bg-yellow-100 text-yellow-800'
+                        }`}>
+                          {user.times_compromised}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {user.last_compromised}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-gray-500 text-center py-8">No vulnerable users found for this period</p>
+          )}
         </div>
 
         {/* Campaign Summary */}
         <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4">Campaign Performance Summary</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Campaign</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sent</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Click Rate</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Submit Rate</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Effectiveness</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {report.campaign_summary.map((campaign, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {campaign.campaign_name}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(campaign.sent_date).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {campaign.total_sent}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {campaign.click_rate.toFixed(1)}%
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {campaign.submit_rate.toFixed(1)}%
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs rounded-full ${
-                        campaign.effectiveness === 'Excellent' ? 'bg-green-100 text-green-800' :
-                        campaign.effectiveness === 'Good' ? 'bg-blue-100 text-blue-800' :
-                        campaign.effectiveness === 'Fair' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-red-100 text-red-800'
-                      }`}>
-                        {campaign.effectiveness}
-                      </span>
-                    </td>
+          <h2 className="text-xl font-semibold mb-4 text-gray-500">Campaign Performance Summary</h2>
+          {campaignSummary.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Campaign</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sent</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Click Rate</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Submit Rate</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Effectiveness</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {campaignSummary.map((campaign, index) => (
+                    <tr key={index}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {campaign.campaign_name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(campaign.sent_date).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {campaign.total_sent}
+                      </td>
+                      <td className="text-gray-500 px-6 py-4">
+                        {campaign.click_rate ? campaign.click_rate.toFixed(1) : '0.0'}%
+                      </td>
+                      <td className="text-gray-500 px-6 py-4">
+                        {campaign.submit_rate ? campaign.submit_rate.toFixed(1) : '0.0'}%
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 py-1 text-xs rounded-full ${
+                          campaign.effectiveness === 'Excellent' ? 'bg-green-100 text-green-800' :
+                          campaign.effectiveness === 'Good' ? 'bg-blue-100 text-blue-800' :
+                          campaign.effectiveness === 'Fair' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-red-100 text-red-800'
+                        }`}>
+                          {campaign.effectiveness}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-gray-500 text-center py-8">No campaigns found for this period</p>
+          )}
         </div>
       </div>
     </div>

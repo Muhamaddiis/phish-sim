@@ -1,6 +1,19 @@
 'use client';
 
-export default function TargetsTable({ targets }: { targets: any[] }) {
+interface Target {
+  id: string;
+  name: string;
+  email: string;
+  department: string;
+  sent: boolean;
+  events?: Array<{ event_type: string }>;
+}
+
+interface TargetsTableProps {
+  targets: Target[];
+}
+
+export default function TargetsTable({ targets }: TargetsTableProps) {
   if (!targets || targets.length === 0) {
     return <p className="text-gray-500">No targets yet. Upload a CSV to add targets.</p>;
   }
@@ -29,9 +42,9 @@ export default function TargetsTable({ targets }: { targets: any[] }) {
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {targets.map((target) => {
-            const hasOpened = target.events?.some((e: any) => e.event_type === 'open');
-            const hasClicked = target.events?.some((e: any) => e.event_type === 'click');
-            const hasSubmitted = target.events?.some((e: any) => e.event_type === 'submit');
+            const hasOpened = target.events?.some((e) => e.event_type === 'open');
+            const hasClicked = target.events?.some((e) => e.event_type === 'click');
+            const hasSubmitted = target.events?.some((e) => e.event_type === 'submit');
 
             return (
               <tr key={target.id}>

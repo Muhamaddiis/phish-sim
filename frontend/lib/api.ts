@@ -8,6 +8,7 @@ const api = axios.create({
   withCredentials: true, // Send cookies with requests
   headers: {
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
   },
 });
 

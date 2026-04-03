@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authAPI } from '@/lib/api';
+import { SiSimplelogin } from "react-icons/si";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,7 +32,7 @@ export default function LoginPage() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <div className="mx-auto h-16 w-16 flex items-center justify-center bg-indigo-600 rounded-full">
-            <span className="text-3xl">🎣</span>
+            <span className="text-3xl"><SiSimplelogin /></span>
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             PhishSim Admin
@@ -41,7 +42,7 @@ export default function LoginPage() {
           </p>
           <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
             <p className="text-xs text-yellow-800 text-center">
-              ⚠️ Educational use only - Requires authorization
+              Educational use only - Requires authorization
             </p>
           </div>
         </div>

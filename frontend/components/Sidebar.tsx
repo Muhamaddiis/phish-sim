@@ -9,6 +9,7 @@ import {
 } from "react-icons/fi";
 import { SiCampaignmonitor } from "react-icons/si";
 import { TbReportSearch } from "react-icons/tb";
+import { MdOutlineSettings } from "react-icons/md";
 import { motion } from "framer-motion";
 
 
@@ -64,8 +65,9 @@ export const Sidebar = () => {
 
 const SIDEBAR_OPTIONS = [
   { title: "Dashboard", icon: FiHome, href: "/admin/dashboard" , notifs: 3},
-  { title: "Campaigns", icon: SiCampaignmonitor, href: "/admin/campaigns"},
-  {title: "Reports", icon: TbReportSearch, href: "/admin/reports"}
+  { title: "Campaign Templates", icon: SiCampaignmonitor, href: "/admin/campaigns"},
+  {title: "Reports", icon: TbReportSearch, href: "/admin/reports"},
+  {title: "Settings", icon: MdOutlineSettings, href: "/admin/settings"},
 ];
 
 
