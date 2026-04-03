@@ -1,10 +1,9 @@
 package middleware
 
 import (
+	"log"
 	"net/http"
 	"os"
-	"log"
-	"strings"
 )
 
 // CORSMiddleware handles CORS with support for ngrok and localhost
@@ -15,6 +14,7 @@ func CORSMiddleware(next http.Handler) http.Handler {
 		// List of allowed origins
 		allowedOrigins := []string{
 			os.Getenv("FRONTEND_URL"),
+			"https://phish-sim.netlify.app",
 			"http://localhost:3000",
 			"http://localhost:3001",
 		}
@@ -25,16 +25,6 @@ func CORSMiddleware(next http.Handler) http.Handler {
 			if origin == allowedOrigin {
 				allowed = true
 				break
-			}
-		}
-
-		// Also allow ngrok URLs
-		if !allowed && origin != "" {
-			if strings.Contains(origin, "ngrok.io") ||
-				strings.Contains(origin, "ngrok-free.app") ||
-				strings.Contains(origin, "ngrok-free.dev") ||
-				strings.Contains(origin, "localhost") {
-				allowed = true
 			}
 		}
 
