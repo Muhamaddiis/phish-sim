@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"net/http/pprof"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -16,6 +17,8 @@ import (
 	"github.com/Muhamaddiis/phish-sim/internal/handlers"
 	"github.com/Muhamaddiis/phish-sim/internal/mailer"
 	custommiddleware "github.com/Muhamaddiis/phish-sim/internal/middleware"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/Muhamaddiis/phish-sim/internal/monitoring"
 )
 
 func main() {
@@ -23,6 +26,8 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found, using system environment variables")
 	}
+
+	monitoring.InitMetrics()
 
 	// Initialize database connection
 	database, err := db.InitDB()
@@ -49,11 +54,13 @@ func main() {
 	// Setup router
 	r := chi.NewRouter()
 
+
 	// Middleware stack
 	r.Use(middleware.Logger)       // Log all requests
 	r.Use(middleware.Recoverer)    // Recover from panics
 	r.Use(middleware.RealIP)       // Get real client IP
 	r.Use(middleware.Timeout(60 * time.Second)) // Request timeout
+	r.Use(custommiddleware.MetricsMiddleware)
 	r.Use(custommiddleware.CORSMiddleware) // Custom CORS handler with ngrok support
 
 	// Public routes (no authentication required)
@@ -99,6 +106,14 @@ func main() {
 		w.Write([]byte(`{"status":"healthy"}`))
 	})
 
+	// Prometheus metrics endpoint
+	r.Group(func(r chi.Router) {
+		r.Use(custommiddleware.AuthMiddleware)
+		r.Handle("/metrics", promhttp.Handler())
+		r.HandleFunc("/debug/pprof/", pprof.Index)
+		r.HandleFunc("/debug/pprof/profile", pprof.Profile)
+		r.HandleFunc("/debug/pprof/heap", pprof.Handler("heap").ServeHTTP)
+	})
 	// Start server
 	port := getEnv("PORT", "8080")
 	log.Printf("🚀 Server starting on port %s", port)
